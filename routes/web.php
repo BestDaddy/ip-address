@@ -17,7 +17,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['namespace' => 'Web'], function () {
-    Route::get('/my-address', 'IPAddressesController@index');
-});
+Route::get('/my-address', 'IPAddressesController@myAddress');
+
+Route::get('/ip-address/{ip}', 'IPAddressesController@show');
+
+Route::resource('/ip-addresses', 'IPAddressesController', ['only' => ['index', 'show', 'store']]);
+
 

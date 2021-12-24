@@ -15,9 +15,9 @@ class CreateIpAddressesTable extends Migration
     {
         Schema::create('ip_addresses', function (Blueprint $table) {
             $table->id();
-            $table->string('ip');
-            $table->string('country');
-            $table->string('city');
+            $table->string('ip')->unique();
+            $table->string('country')->nullable();
+            $table->string('city')->nullable();
             $table->timestamps();
         });
     }
