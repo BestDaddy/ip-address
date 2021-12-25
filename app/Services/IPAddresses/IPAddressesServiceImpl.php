@@ -8,6 +8,7 @@ use App\Models\IPAddress;
 use App\Services\BaseServiceImpl;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Validator;
 
 class IPAddressesServiceImpl extends BaseServiceImpl implements IPAddressesService
 {
@@ -18,13 +19,17 @@ class IPAddressesServiceImpl extends BaseServiceImpl implements IPAddressesServi
 
     public function findIP($ip)
     {
+        $error = Validator::make(['ip' => $ip], array(
+            'ip'        => ['ipv4'],
+        ));
+
+        if($error->fails())
+            abort(404);
+
         $ip_address = $this->firstWhere(['ip' => $ip]);
 
         if(is_null($ip_address)) {
             $res = $this->getExternalIPInfo($ip);
-
-//            if( data_get($res, 'status') == 'fail')  // they always return status code 200
-//                return ;
 
             return $this->updateOrCreate([
                 'ip'      => $ip,

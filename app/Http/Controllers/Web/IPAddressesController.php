@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 class IPAddressesController extends Controller
 {
-    protected $ipAddressesService;
+    private $ipAddressesService;
 
     public function __construct(IPAddressesService $ipAddressesService)
     {
@@ -47,13 +47,6 @@ class IPAddressesController extends Controller
 
     public function show($ip)
     {
-        $error = Validator::make(['ip' => $ip], array(
-            'ip'        => ['ipv4'],
-        ));
-
-        if($error->fails())
-             abort(404);
-
         $ip_address = $this->ipAddressesService->findIP($ip);
         return view('ip-addresses.show', compact('ip_address'));
     }

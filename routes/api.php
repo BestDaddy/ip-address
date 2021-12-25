@@ -14,6 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
+
+Route::get('/ip-addresses', 'IPAddressesController@index');
+Route::get('/ip-addresses/{ip}', 'IPAddressesController@show');
+Route::post('/ip-addresses', 'IPAddressesController@store');
+Route::get('/ip-addresses/{id}/edit', 'IPAddressesController@edit');
+

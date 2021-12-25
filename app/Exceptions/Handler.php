@@ -2,7 +2,9 @@
 
 namespace App\Exceptions;
 
+use App\Http\Utils\ApiUtil;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -39,6 +41,38 @@ class Handler extends ExceptionHandler
         parent::report($exception);
     }
 
+    private function handleWebException($request, Throwable $exception)
+    {
+
+        if ($exception instanceof WebServiceException) {
+            return redirect()->back()->withErrors($exception->getValidator())->withInput();
+        }
+
+        if ($exception instanceof WebServiceErroredException) {
+            return redirect()->back()->with('error', $exception->getExplanation());
+        }
+        return parent::render($request, $exception);
+    }
+
+    private function handleApiException($request, Throwable $exception)
+    {
+        $exception = $this->prepareException($exception);
+
+        if ($exception instanceof \App\Exceptions\ApiServiceException) {
+            return $exception->getApiResponse();
+        }
+
+        if ($exception instanceof MethodNotAllowedHttpException) {
+            return response()->json(['error' => 'Bad Request'], 404);
+        }
+
+        if ($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
+            return response()->json(['error' => 'Not found'], 404);
+        }
+
+        return parent::render($request, $exception);
+    }
+
     /**
      * Render an exception into an HTTP response.
      *
@@ -50,6 +84,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        return parent::render($request, $exception);
+        if (ApiUtil::checkUrlIsApi($request)) {
+            return $this->handleApiException($request, $exception);
+        } else {
+            return $this->handleWebException($request, $exception);
+        }
     }
 }
