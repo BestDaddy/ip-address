@@ -14,13 +14,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('my-address');
 });
 
-Route::get('/my-address', 'IPAddressesController@myAddress');
+Route::get('/my-address', 'IPAddressesController@myAddress')->name('my-address');
 
-Route::get('/ip-address/{ip}', 'IPAddressesController@show');
-
-Route::resource('/ip-addresses', 'IPAddressesController', ['only' => ['index', 'show', 'store']]);
+Route::resource('/ip-addresses', 'IPAddressesController', ['only' => ['index', 'show', 'store', 'edit', 'destroy']]);
 
 

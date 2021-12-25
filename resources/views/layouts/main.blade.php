@@ -53,7 +53,7 @@
             {{--            <div class="sidebar-brand-icon rotate-n-15">--}}
             {{--                <i class="fas fa-laugh-wink"></i>--}}
             {{--            </div>--}}
-            <div class="sidebar-brand-text mx-3">Online Shop</div>
+            <div class="sidebar-brand-text mx-3">IP Адреса</div>
         </a>
 
         <!-- Divider -->
@@ -73,66 +73,16 @@
         <div class="sidebar-heading">
             Interface
         </div>
-{{--        @guest--}}
-{{--            <li class="nav-item">--}}
-{{--                <a class="nav-link" href="{{route('user.items.index')}}">--}}
-{{--                    <i class="fas fa-fw fa-boxes"></i>--}}
-{{--                    <span>Items Shop</span></a>--}}
-{{--            </li>--}}
-{{--        @else--}}
-{{--            @if(Auth::user()->isAdmin())--}}
-{{--                <li class="nav-item">--}}
-{{--                    <a class="nav-link" href="{{route('user.items.index')}}">--}}
-{{--                        <i class="fas fa-fw fa-boxes"></i>--}}
-{{--                        <span>Items Shop</span></a>--}}
-{{--                </li>--}}
-{{--                <li class="nav-item">--}}
-{{--                    <a class="nav-link" href="{{route('admin.items.index')}}">--}}
-{{--                        <i class="fas fa-fw fa-boxes"></i>--}}
-{{--                        <span>Items</span></a>--}}
-{{--                </li>--}}
-{{--                <li class="nav-item">--}}
-{{--                    <a class="nav-link" href="{{route('admin.categories.index')}}">--}}
-{{--                        <i class="fas fa-fw fa-list-alt"></i>--}}
-{{--                        <span>Categories</span></a>--}}
-{{--                </li>--}}
-{{--            @elseif(Auth::user()->isUser())--}}
-{{--                <li class="nav-item">--}}
-{{--                    <a class="nav-link" href="{{route('user.items.index')}}">--}}
-{{--                        <i class="fas fa-fw fa-boxes"></i>--}}
-{{--                        <span>Items Shop</span></a>--}}
-{{--                </li>--}}
-{{--            @endif--}}
-{{--        @endif--}}
-
-        {{--        <li class="nav-item">--}}
-        {{--            <a class="nav-link" href="{{route('cars.index')}}">--}}
-        {{--                <i class="fas fa-fw fa-car"></i>--}}
-        {{--                <span>Мои машины</span></a>--}}
-        {{--        </li>--}}
-    <!-- Nav Item - Pages Collapse Menu -->
-        {{--        <li class="nav-item">--}}
-        {{--            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">--}}
-        {{--                <i class="fas fa-fw fa-cog"></i>--}}
-        {{--                <i class="fas fa-fw fa-folder"></i>--}}
-        {{--                <span>Links</span>--}}
-        {{--            </a>--}}
-        {{--            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">--}}
-        {{--                <div class="bg-white py-2 collapse-inner rounded">--}}
-        {{--                    @if(Auth::user()->isAdmin())--}}
-        {{--                    <h6 class="collapse-header">Admin links:</h6>--}}
-        {{--                    <a class="collapse-item" href="{{route('admin.items.index')}}">Items</a>--}}
-        {{--                    <a class="collapse-item" href="{{route('roads.index')}}">Roads</a>--}}
-        {{--                    <a class="collapse-item" href="{{route('users.index')}}">Users</a>--}}
-        {{--                    @endif--}}
-        {{--                    <h6 class="collapse-header">Custom links:</h6>--}}
-        {{--                    <a class="collapse-item" href="{{route('cars.index')}}">My Cars</a>--}}
-        {{--                    <a class="collapse-item" href="{{route('myCourses')}}">My courses</a>--}}
-        {{--                    <a class="collapse-item" href="{{route('myGroups')}}">My groups</a>--}}
-        {{--                </div>--}}
-        {{--            </div>--}}
-        {{--        </li>--}}
-
+            <li class="nav-item">
+                <a class="nav-link" href="{{route('ip-addresses.index')}}">
+                    <i class="fas fa-fw fa-id-card"></i>
+                    <span>Все ip адреса</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{route('my-address')}}">
+                    <i class="fas fa-fw fa-address-book"></i>
+                    <span>Мой ip адрес</span></a>
+            </li>
         <hr class="sidebar-divider d-none d-md-block">
 
         <!-- Sidebar Toggler (Sidebar) -->
@@ -158,16 +108,16 @@
                 </button>
 
                 <!-- Topbar Search -->
-            {{--                <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">--}}
-            {{--                    <div class="input-group">--}}
-            {{--                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">--}}
-            {{--                        <div class="input-group-append">--}}
-            {{--                            <button class="btn btn-primary" type="button">--}}
-            {{--                                <i class="fas fa-search fa-sm"></i>--}}
-            {{--                            </button>--}}
-            {{--                        </div>--}}
-            {{--                    </div>--}}
-            {{--                </form>--}}
+                            <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                                <div class="input-group">
+                                    <input id="search" name="search" type="text" class="form-control bg-light border-0 small" placeholder="Найти IP адрес..." aria-label="Search" aria-describedby="basic-addon2">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="button" onclick="searchIP()">
+                                            <i class="fas fa-search fa-sm"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
 
             <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
@@ -281,6 +231,15 @@
 {{--    </div>--}}
 {{--</div>--}}
 @yield('scripts')
+
+<script>
+    function searchIP() {
+        var search = $('#search').val();
+        let _url = `/ip-addresses/${search}`;
+        console.log('asdf');
+        window.location.replace(_url);
+    }
+</script>
 <!-- Bootstrap core JavaScript-->
 <!-- Bootstrap core JavaScript-->
 <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>

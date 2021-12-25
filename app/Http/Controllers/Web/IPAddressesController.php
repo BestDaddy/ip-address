@@ -19,7 +19,7 @@ class IPAddressesController extends Controller
 
     public function myAddress(Request $request): ?string
     {
-        return $request->ip();
+        return $this->show($request->ip());
     }
 
     public function index()
@@ -36,7 +36,7 @@ class IPAddressesController extends Controller
                 ->addColumn('more', function ($data) {
                     return '<a
                         class="text-decoration-none"
-                        href="'.route('ip-addresses.show', $data->id).'">
+                        href="'.route('ip-addresses.show', $data->ip).'">
                         <button class="btn btn-primary btn-sm btn-block">Подробнее</button></a>';
                 })
                 ->rawColumns(['more', 'edit'])
@@ -47,7 +47,15 @@ class IPAddressesController extends Controller
 
     public function show($ip)
     {
-        return $this->ipAddressesService->findIP($ip);
+        $error = Validator::make(['ip' => $ip], array(
+            'ip'        => ['ipv4'],
+        ));
+
+        if($error->fails())
+             abort(404);
+
+        $ip_address = $this->ipAddressesService->findIP($ip);
+        return view('ip-addresses.show', compact('ip_address'));
     }
 
     public function store(Request $request)
@@ -64,5 +72,16 @@ class IPAddressesController extends Controller
         $ip_address = $this->ipAddressesService->updateOrCreate(['id' => $request->input('id')], $request->toArray());
 
         return response()->json(['code'=>200, 'message'=>'Model saved successfully', 'data' => $ip_address]);
+    }
+
+    public function edit($id)
+    {
+        return response()->json($this->ipAddressesService->find($id));
+    }
+
+    public function destroy($id)
+    {
+        $ip_address = $this->ipAddressesService->delete($id);
+        return response()->json(['code'=>200, 'message'=>'Model deleted successfully', 'data' => $ip_address]);
     }
 }

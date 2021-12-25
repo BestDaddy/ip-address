@@ -1,12 +1,12 @@
 @extends('layouts.main')
 
 @section('content')
-    <h2>Все товары</h2>
+    <h2>Все IP адреса</h2>
     <hr>
     <br>
     <div class="row" style="clear: both;">
         <div class="col-12 text-right">
-            <a href="javascript:void(0)" class="btn btn-primary" data-toggle="modal" onclick="add()"><i class="fas fa-plus-square"></i> Добавить пользователя</a>
+            <a href="javascript:void(0)" class="btn btn-primary" data-toggle="modal" onclick="add()"><i class="fas fa-plus-square"></i> Добавить IP адрес</a>
         </div>
     </div>
     <br>
@@ -15,9 +15,9 @@
             <thead>
             <tr>
                 <th width="5%">ID</th>
-                <th width="25%">Имя</th>
-                <th width="20%">ID</th>
-                <th width="20%">Имя</th>
+                <th width="25%">IP</th>
+                <th width="20%">Страна</th>
+                <th width="20%">Город</th>
                 <th width="15%"></th>
                 <th width="15%"></th>
             </tr>
@@ -104,6 +104,44 @@
             $('#form-errors').html('');
             $('#collapseExample').hide();
             $('#post-modal').modal('show');
+        }
+
+        function deleteModel() {
+            var id = $('#model_id').val();
+            let _url = `/ip-addresses/${id}`;
+            let _token   = $('meta[name="csrf-token"]').attr('content');
+            $.ajax({
+                url: _url,
+                type: 'DELETE',
+                data: {
+                    _token: _token
+                },
+                success: function(response) {
+                    $('#table-model').DataTable().ajax.reload();
+                    $('#post-modal').modal('hide');
+                }
+            });
+        }
+
+        function editModel (event) {
+            $('#delete-button').show();
+            $('#staticBackdropLabel').text("Редактировать IP адрес");
+            $('#form-errors').html("");
+            var id  = $(event).data("id");
+            let _url = `/ip-addresses/${id}/edit`;
+            $.ajax({
+                url: _url,
+                type: "GET",
+                success: function(response) {
+                    if(response) {
+                        $('#model_id').val(response.id);
+                        $('#ip').val(response.ip);
+                        $('#country').val(response.country);
+                        $('#city').val(response.city);
+                        $('#post-modal').modal('show');
+                    }
+                }
+            });
         }
 
         function saveModel() {

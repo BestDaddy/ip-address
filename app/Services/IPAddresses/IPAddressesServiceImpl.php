@@ -23,14 +23,14 @@ class IPAddressesServiceImpl extends BaseServiceImpl implements IPAddressesServi
         if(is_null($ip_address)) {
             $res = $this->getExternalIPInfo($ip);
 
-            if( data_get($res, 'status') == 'fail')  // they always return status code 200
-                return ;
+//            if( data_get($res, 'status') == 'fail')  // they always return status code 200
+//                return ;
 
             return $this->updateOrCreate([
                 'ip'      => $ip,
             ], [
-                'country' => data_get($res, 'country'),
-                'city'    => data_get($res, 'city'),
+                'country' => data_get($res, 'country', 'Not found'),
+                'city'    => data_get($res, 'city', 'Not found'),
             ]);
         }
 
